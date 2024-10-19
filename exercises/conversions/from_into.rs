@@ -40,11 +40,41 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
+
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
-    }
+        //先检查字符串是否为空
+        if s.is_empty(){
+            return Person::default();
+        }
+        let binding = s.to_string();
+        let mut iter=binding.split(",");
+
+        let name=iter.next().unwrap().to_string();
+        
+        //检查年龄
+        let temp=iter.next();
+        if temp==None {
+            return Person::default();
+        }
+        let mut age=match temp.unwrap().parse() {
+            Ok(x)=>x,
+            _=>0,
+        };
+        if name.is_empty()||age==0{
+            return Person::default();
+        }
+        //检查是否有第三个元素
+        let temp2=iter.next();
+        if temp2 != None {
+            return Person::default();
+        }
+        Person {
+            name,
+            age
+        }
+    }          
 }
 
 fn main() {
